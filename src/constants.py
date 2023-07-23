@@ -1,4 +1,4 @@
-DEFAULT_PORT = {5000: 5000}
+ALL = 'all'
 IMAGES = 'images'
 CONTAINERS = 'containers'
-ALL = 'all'
+DEFAULT_PORT = {5000: 5000}

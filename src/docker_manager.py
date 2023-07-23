@@ -28,8 +28,10 @@ class DockerManager:
 
         self.client = self.instantiate_client()
 
-        self.logger = get_logger(debug=debug,
-                                 silent=not verbose)
+        self.logger = get_logger(
+            debug=debug,
+            silent=not verbose,
+        )
 
         self.tag = None
 
@@ -201,25 +203,19 @@ class DockerManager:
 
         self.logger.info('ALL CONTAINERS ARE REMOVED')
 
-    def list_images(
-            self,
-            name=None,
-    ) -> list:
+    def list_images(self, name: str = None) -> list:
         return self.client.images.list(name=name)
 
-    def list_containers(self,
-                        image_name=None) -> list:
+    def list_containers(self, image_name: str = None) -> list:
         return self.client.containers.list(
             filters={"ancestor": image_name},
         )
 
-    def check_image(self,
-                    image: str) -> None:
+    def check_image(self, image: str) -> None:
         if not self.list_images(name=image):
             self.handle_non_existing_image(image=image)
 
-    def check_image_containers(self,
-                               image: str) -> None:
+    def check_image_containers(self, image: str) -> None:
         if self.list_containers(image):
             self.handle_running_container(
                 reason='image',
@@ -227,8 +223,7 @@ class DockerManager:
                 for_image=True,
             )
 
-    def handle_non_existing_image(self,
-                                  image: str) -> None:
+    def handle_non_existing_image(self, image: str) -> None:
         confirm = self.ask_to_build_image(name=image)
         if confirm:
             self.build_image(image)
@@ -287,8 +282,7 @@ class DockerManager:
         self.logger.info(f'Image Tagged -> {push_name}')
         return push_name
 
-    def authenticate_docker(self,
-                            aws_region: str) -> None:
+    def authenticate_docker(self, aws_region: str) -> None:
         credentials = self.get_ecr_credentials(aws_region)
         if self.is_sagemaker:
             self.reset_credentials()
