@@ -7,16 +7,18 @@ from pathlib import Path
 from ast import literal_eval
 from typing import Dict, Union, List
 
-from src.utils.logger_ import get_logger
-from src.utils.filing import (set_json,
-                              get_json)
+from src.utils.logging_ import get_logger
+from src.utils.filing import (
+    set_json,
+    get_json,
+)
 
 from src.constants import (ALL,
                            IMAGES,
                            CONTAINERS,
                            DEFAULT_PORT)
 
-from src.utils.exception_handling import credentials_not_found
+from src.utils.exceptions_handling import credentials_not_found
 
 
 class DockerManager:
@@ -103,17 +105,18 @@ class DockerManager:
 
     @property
     def running_containers(self) -> list:
-        """ Equaivalent to command docker ps """
+        """ Equivalent to command docker ps """
         return self.client.containers.list()
 
     @property
     def all_containers(self) -> list:
-        """ Equaivalent to command docker ps --all """
+        """ Equivalent to command docker ps --all """
         return self.client.containers.list(all=True)
 
     @staticmethod
-    def ask_to_stop_container(reason: str,
-                              name: str) -> bool:
+    def ask_to_stop_container(
+            reason: str,
+            name: str) -> bool:
         message = f"Container With {reason} -> {name} <- Is Running.\n" \
                   f"Stop the Container? [y/n] "
         response = input(message)
@@ -348,7 +351,7 @@ class DockerManager:
             reason: str,
             name: str,
             id_: str = None,
-            for_image: str = False,
+            for_image: bool = False,
     ) -> None:
 
         confirmed = self.ask_to_stop_container(reason, name)
